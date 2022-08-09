@@ -1,7 +1,13 @@
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { Blog } from "./blog";
+import { createDb } from './db.js'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 async function main() {
-  const blog = new Blog()
+  const db = createDb(join(__dirname, 'data.sqlite'))
+  const blog = new Blog(db)
   await blog.initialize()
   const posts = await blog.getAllPosts()
   if (posts.length === 0) {
